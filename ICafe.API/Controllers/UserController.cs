@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ICafe.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer", Policy = "RequireAdministratorRoles")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -64,13 +64,41 @@ namespace ICafe.API.Controllers
             return Ok(user);
         }
 
+        [Authorize]
+        [HttpPut("user")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserForDetailedDto userDetail)
+        {
+            var user = await _userRepo.Get(new User() { Id = Convert.ToInt32(userDetail.Id) });
+            user = MapUser(user, userDetail);
+            try
+            {
+                var res = await _userRepo.Update(user);
+                
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                BadRequest(ex.Message);
+            }
+
+            return BadRequest();
+        }
+
+        private User MapUser(User user, UserForDetailedDto userDto)
+        {
+            user.Name = userDto.Name;
+            user.Surname = userDto.Surname;
+            user.DateOfBirth = userDto.DateOfBirth;
+
+            return user;
+        }
         public class RoleChanger
         {
             public string id { get; set; }
             public string role { get; set; }
         }
 
-        [HttpPut("user")]
+        [HttpPut("addrole")]
         public async Task<IActionResult> AddRoleToUser([FromBody] RoleChanger role)
         {
             try
