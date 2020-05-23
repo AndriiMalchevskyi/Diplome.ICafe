@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace ICafe.API.Controllers
 {
-    //[AllowAnonymous]
+    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase

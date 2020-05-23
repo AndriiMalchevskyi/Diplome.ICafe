@@ -8,29 +8,17 @@ namespace ICafe.Application.Models.User
     public class UserForRegisterDto
     {
         [Required]
-        public string Username { get; set; }
+        public string UserName { get; set; }
+
         [Required]
-        [StringLength(16, MinimumLength = 4, ErrorMessage = "You must specify password between 4 and 8 characters")]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(16, MinimumLength = 4, ErrorMessage = "You must specify password between 4 and 16 characters")]
         public string Password { get; set; }
 
-        //[Required]
-        public string Gender { get; set; }
-
-        //[Required]
-        public string KnownAs { get; set; }
-
-        //[Required]
-        public string City { get; set; }
-
-        //[Required]
-        public string Country { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime LastActive { get; set; }
-
-        public UserForRegisterDto()
-        {
-            Created = DateTime.Now;
-            LastActive = DateTime.Now;
-        }
+        public DateTime Created { get; set; } = DateTime.Now;
+        public DateTime LastActive { get; set; } = DateTime.Now;
     }
 }

@@ -5,12 +5,12 @@ using System.Text;
 
 namespace ICafe.Application.Models.User
 {
-    public class UserForLoginDto
+    public class UserPasswordToResetDto
     {
         [Required]
-        public string Login { get; set; }
-
+        public string oldPassword { get; set; }
+        
         [Required]
-        public string Password { get; set; }
+        public string newPassword { get; set; }
     }
 }

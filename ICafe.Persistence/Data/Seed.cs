@@ -23,15 +23,15 @@ namespace ICafe.Persistence.Data
         {
             if (!_userManager.Users.Any())
             {
-                //var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
-                //var users = JsonConvert.DeserializeObject<List<User>>(userData);
-
                 var roles = new List<Role>
                 {
-                    new Role{Name = "Member"},
-                    new Role{Name = "Admin"},
-                    new Role{Name = "Moderator"},
-                    new Role{Name = "VIP"},
+                    new Role{Name = "visitor"},
+                    new Role{Name = "worker"},
+                    new Role{Name = "waiter"},
+                    new Role{Name = "cook"},
+                    new Role{Name = "admin"},
+                    new Role{Name = "sysadmin"},
+                    new Role{Name = "root"},
                 };
 
                 foreach (var role in roles)
@@ -39,15 +39,10 @@ namespace ICafe.Persistence.Data
                     _roleMager.CreateAsync(role).Wait();
                 }
 
-                //foreach (var user in users)
-                //{
-                //    _userManager.CreateAsync(user, "password").Wait();
-                //    _userManager.AddToRoleAsync(user, "Member").Wait();
-                //}
-
                 var adminUser = new User
                 {
-                    UserName = "Admin"
+                    UserName = "Admin",
+                    Email = "asmalchevskyi@gmail.com"
                 };
 
                 IdentityResult result = _userManager.CreateAsync(adminUser, "password").Result;
@@ -55,7 +50,7 @@ namespace ICafe.Persistence.Data
                 if (result.Succeeded)
                 {
                     var admin = _userManager.FindByNameAsync("Admin").Result;
-                    _userManager.AddToRolesAsync(admin, new[] { "Admin", "Moderator" }).Wait();
+                    _userManager.AddToRolesAsync(admin, new[] { "root" }).Wait();
                 }
 
             }
