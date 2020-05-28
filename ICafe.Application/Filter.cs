@@ -10,5 +10,6 @@ namespace ICafe.Application
         public int Offset { get; set; }
         public int Limit { get; set; }
         public string Type { get; set; }
+        public string Status { get; set; }
     }
 }

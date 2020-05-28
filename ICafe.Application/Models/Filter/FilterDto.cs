@@ -9,5 +9,6 @@ namespace ICafe.Application.Models.Filter
         public int Offset { get; set; } = 0;
         public int Limit { get; set; } = 20;
         public string Type { get; set; }
+        public string Status { get; set; }
     }
 }

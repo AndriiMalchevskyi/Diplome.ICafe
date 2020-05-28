@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ICafe.Persistence.Migrations
 {
     [DbContext(typeof(ICafeContext))]
-    [Migration("20200503151117_init")]
+    [Migration("20200527183431_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,11 +59,15 @@ namespace ICafe.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description");
+
                     b.Property<int?>("DiscountId");
 
                     b.Property<decimal>("OrderSummary");
 
                     b.Property<int?>("OwnerId");
+
+                    b.Property<string>("Status");
 
                     b.HasKey("Id");
 
@@ -80,25 +84,34 @@ namespace ICafe.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Category");
+
                     b.Property<string>("Description");
 
                     b.Property<int?>("FavoritesId");
-
-                    b.Property<int?>("OrderId");
 
                     b.Property<decimal>("Price");
 
                     b.Property<string>("Title");
 
-                    b.Property<string>("Type");
-
                     b.HasKey("Id");
 
                     b.HasIndex("FavoritesId");
 
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ICafe.Domain.Entities.ProductOrder", b =>
+                {
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("OrderId");
+
+                    b.HasKey("ProductId", "OrderId");
+
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Products");
+                    b.ToTable("ProductOrder");
                 });
 
             modelBuilder.Entity("ICafe.Domain.Entities.Role", b =>
@@ -200,17 +213,9 @@ namespace ICafe.Persistence.Migrations
 
                     b.Property<int>("RoleId");
 
-                    b.Property<int?>("RoleId1");
-
-                    b.Property<int?>("UserId1");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles");
                 });
@@ -308,10 +313,19 @@ namespace ICafe.Persistence.Migrations
                     b.HasOne("ICafe.Domain.Entities.Favorites")
                         .WithMany("Products")
                         .HasForeignKey("FavoritesId");
+                });
 
-                    b.HasOne("ICafe.Domain.Entities.Order")
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId");
+            modelBuilder.Entity("ICafe.Domain.Entities.ProductOrder", b =>
+                {
+                    b.HasOne("ICafe.Domain.Entities.Order", "Order")
+                        .WithMany("ProductOrders")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ICafe.Domain.Entities.Product", "Product")
+                        .WithMany("ProductOrders")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ICafe.Domain.Entities.User", b =>
@@ -323,23 +337,15 @@ namespace ICafe.Persistence.Migrations
 
             modelBuilder.Entity("ICafe.Domain.Entities.UserRole", b =>
                 {
-                    b.HasOne("ICafe.Domain.Entities.Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ICafe.Domain.Entities.Role", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1");
-
-                    b.HasOne("ICafe.Domain.Entities.User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ICafe.Domain.Entities.User", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

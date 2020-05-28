@@ -9,10 +9,12 @@ using ICafe.Application.Interfaces;
 using ICafe.Domain.Entities;
 using ICafe.Application.Models.Product;
 using Microsoft.AspNetCore.Authorization;
+using ICafe.Application;
+using ICafe.Application.Models.Filter;
 
 namespace ICafe.API.Controllers
 {
-    [AllowAnonymous]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
@@ -27,7 +29,6 @@ namespace ICafe.API.Controllers
         }
 
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(ProductToCreateDto productToCreateDto)
         {
@@ -46,13 +47,12 @@ namespace ICafe.API.Controllers
 
         }
 
-        [Authorize]
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int productId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                var productToDelete = _mapper.Map<Product>(new Product() { Id = productId });
+                var productToDelete = _mapper.Map<Product>(new Product() { Id = id });
 
                 var result = await _repository.Delete(productToDelete);
                 
@@ -65,7 +65,7 @@ namespace ICafe.API.Controllers
 
         }
 
-        [Authorize]
+        
         [HttpPut]
         public async Task<IActionResult> Update(ProductToUpdateDto productToUpdateDto)
         {
@@ -84,14 +84,33 @@ namespace ICafe.API.Controllers
 
         }
 
-        [HttpGet("{productId}")]
-        public async Task<IActionResult> Get(int productId)
+        [AllowAnonymous]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
             try
             {
-                var productToGet = _mapper.Map<Product>(new Product(){ Id = productId });
+                var productToGet = _mapper.Map<Product>(new Product(){ Id = id });
 
                 var result = await _repository.Get(productToGet);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> Get([FromQuery] FilterDto filter)
+        {
+            try
+            {
+                var filterIns = _mapper.Map<Filter>(filter);
+                var result = await _repository.Get(filterIns);
 
                 return Ok(result);
             }

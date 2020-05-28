@@ -9,5 +9,6 @@ namespace ICafe.Application.Interfaces
         int Offset { get; set; }
         int Limit { get; set; }
         string Type { get; set; }
+        string Status { get; set; }
     }
 }

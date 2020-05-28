@@ -107,6 +107,7 @@ namespace ICafe.API
             services.AddAutoMapper(typeof(AutoMapperProfiles));
             services.AddScoped<IRepository<Product>, ProductRepository>();
             services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<Order>, OrderRepository>();
             //services.AddScoped<IEstateAgentsRepository, EstateAgentsRepository>();
 
         }

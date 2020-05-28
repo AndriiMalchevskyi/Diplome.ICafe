@@ -1,15 +1,15 @@
-﻿
+﻿using ICafe.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ICafe.Domain.Entities
+namespace ICafe.Application.Models.Order
 {
-    public class Order
+    public class OrderToUpdateDto
     {
         public int Id { get; set; }
-        public User Owner { get; set; }
-        public virtual ICollection<ProductOrder> ProductOrders { get; set; }
+        public ICafe.Domain.Entities.User Owner { get; set; }
+        public int[] ProductsIds { get; set; }
         public decimal OrderSummary { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }

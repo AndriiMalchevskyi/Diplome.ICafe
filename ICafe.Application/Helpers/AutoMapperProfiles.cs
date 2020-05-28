@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ICafe.Application.Models.Filter;
+using ICafe.Application.Models.Order;
 using ICafe.Application.Models.Product;
 using ICafe.Application.Models.User;
 using ICafe.Domain.Entities;
@@ -35,6 +36,9 @@ namespace ICafe.Application.Helpers
 
             CreateMap<ProductToCreateDto, Product>();
             CreateMap<ProductToUpdateDto, Product>();
+
+            CreateMap<OrderToCreateDto, Order>();
+            CreateMap<OrderToUpdateDto, Order>();
             //CreateMap<MessageForCreationDto, Message>().ReverseMap();
             // CreateMap<Message, MessageToReturnDto>();
             /*

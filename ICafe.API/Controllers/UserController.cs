@@ -64,7 +64,7 @@ namespace ICafe.API.Controllers
             return Ok(user);
         }
 
-        [Authorize]
+
         [HttpPut("user")]
         public async Task<IActionResult> UpdateUser([FromBody] UserForDetailedDto userDetail)
         {

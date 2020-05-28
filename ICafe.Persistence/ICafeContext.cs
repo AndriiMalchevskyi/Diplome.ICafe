@@ -53,6 +53,16 @@ namespace ICafe.Persistence
                 .IsRequired();
             });
 
+
+            builder.Entity<ProductOrder>().HasKey(po => new { po.ProductId, po.OrderId });
+            builder.Entity<ProductOrder>().HasOne<Product>(po => po.Product)
+                .WithMany(s => s.ProductOrders)
+                .HasForeignKey(po => po.ProductId);
+
+            builder.Entity<ProductOrder>().HasOne<Order>(po => po.Order)
+                .WithMany(s => s.ProductOrders)
+                .HasForeignKey(po => po.OrderId);
+
             //builder.Entity<Message>()
             //.HasOne(u => u.Sender)
             //.WithMany(m => m.MessagesSent)
