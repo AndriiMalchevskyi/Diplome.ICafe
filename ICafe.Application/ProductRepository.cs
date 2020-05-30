@@ -37,14 +37,18 @@ namespace ICafe.Application
 
         public async Task<Product> Get(Product item)
         {
-            var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == item.Id);
+            var product = await _context.Products
+                .Include(p => p.Photo)
+                .FirstOrDefaultAsync(p => p.Id == item.Id);
 
             return product;
         }
 
         public async Task<ICollection<Product>> Get(IFilter filter)
         {
-            var products = await _context.Products.Skip(filter.Offset).Take(filter.Limit).ToListAsync();
+            var products = await _context.Products
+                .Include(p => p.Photo)
+                .Skip(filter.Offset).Take(filter.Limit).ToListAsync();
 
             return products;
         }

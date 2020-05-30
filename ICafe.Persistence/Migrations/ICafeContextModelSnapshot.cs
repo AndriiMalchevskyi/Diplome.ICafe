@@ -76,6 +76,23 @@ namespace ICafe.Persistence.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("ICafe.Domain.Entities.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("PublicId");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("ICafe.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -88,6 +105,8 @@ namespace ICafe.Persistence.Migrations
 
                     b.Property<int?>("FavoritesId");
 
+                    b.Property<int?>("PhotoId");
+
                     b.Property<decimal>("Price");
 
                     b.Property<string>("Title");
@@ -95,6 +114,8 @@ namespace ICafe.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FavoritesId");
+
+                    b.HasIndex("PhotoId");
 
                     b.ToTable("Products");
                 });
@@ -183,6 +204,8 @@ namespace ICafe.Persistence.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int?>("PhotoId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<string>("Surname");
@@ -203,6 +226,8 @@ namespace ICafe.Persistence.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PhotoId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -313,6 +338,10 @@ namespace ICafe.Persistence.Migrations
                     b.HasOne("ICafe.Domain.Entities.Favorites")
                         .WithMany("Products")
                         .HasForeignKey("FavoritesId");
+
+                    b.HasOne("ICafe.Domain.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
                 });
 
             modelBuilder.Entity("ICafe.Domain.Entities.ProductOrder", b =>
@@ -333,6 +362,10 @@ namespace ICafe.Persistence.Migrations
                     b.HasOne("ICafe.Domain.Entities.DiscountCard", "Discount")
                         .WithMany()
                         .HasForeignKey("DiscountId");
+
+                    b.HasOne("ICafe.Domain.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
                 });
 
             modelBuilder.Entity("ICafe.Domain.Entities.UserRole", b =>

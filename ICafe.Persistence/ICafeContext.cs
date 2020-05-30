@@ -26,6 +26,8 @@ namespace ICafe.Persistence
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<Photo> Photos { get; set; }
+
         //public DbSet<EstatePhoto> EstatePhotos { get; set; }
 
         //public DbSet<Estate> Estates { get; set; }
@@ -52,7 +54,6 @@ namespace ICafe.Persistence
                 .HasForeignKey(ur => ur.UserId)
                 .IsRequired();
             });
-
 
             builder.Entity<ProductOrder>().HasKey(po => new { po.ProductId, po.OrderId });
             builder.Entity<ProductOrder>().HasOne<Product>(po => po.Product)

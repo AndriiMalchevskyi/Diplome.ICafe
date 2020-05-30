@@ -41,6 +41,7 @@ namespace ICafe.Application
             var user = await _context.Users
                 .Include(u => u.UserRoles)
                 .ThenInclude(er => er.Role)
+                .Include(u => u.Photo)
                 .FirstOrDefaultAsync(u => u.Id == item.Id);
 
             return user;
@@ -51,6 +52,7 @@ namespace ICafe.Application
             var users = await _context.Users
                 .Include(u => u.UserRoles)
                 .ThenInclude(er => er.Role)
+                .Include(u => u.Photo)
                 .Skip(filter.Offset)
                 .Take(filter.Limit)
                 .ToListAsync();

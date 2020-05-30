@@ -92,7 +92,7 @@ namespace ICafe.API.Controllers
             {
                 var productToGet = _mapper.Map<Product>(new Product(){ Id = id });
 
-                var result = await _repository.Get(productToGet);
+                var result = _mapper.Map<ProductToDetailDto>(await _repository.Get(productToGet));
 
                 return Ok(result);
             }
@@ -110,7 +110,7 @@ namespace ICafe.API.Controllers
             try
             {
                 var filterIns = _mapper.Map<Filter>(filter);
-                var result = await _repository.Get(filterIns);
+                var result = _mapper.Map<ProductToDetailDto[]>(await _repository.Get(filterIns));
 
                 return Ok(result);
             }

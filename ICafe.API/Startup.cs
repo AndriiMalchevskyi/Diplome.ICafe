@@ -108,6 +108,7 @@ namespace ICafe.API
             services.AddScoped<IRepository<Product>, ProductRepository>();
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<Order>, OrderRepository>();
+            services.AddScoped<IRepository<Photo>, PhotoRepository>();
             //services.AddScoped<IEstateAgentsRepository, EstateAgentsRepository>();
 
         }

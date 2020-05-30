@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ICafe.Persistence.Migrations
 {
     [DbContext(typeof(ICafeContext))]
-    [Migration("20200527183431_init")]
+    [Migration("20200530165538_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -78,6 +78,28 @@ namespace ICafe.Persistence.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("ICafe.Domain.Entities.Photo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("PublicId");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("Photos");
+                });
+
             modelBuilder.Entity("ICafe.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -106,6 +128,8 @@ namespace ICafe.Persistence.Migrations
                     b.Property<int>("ProductId");
 
                     b.Property<int>("OrderId");
+
+                    b.Property<int>("ProductCount");
 
                     b.HasKey("ProductId", "OrderId");
 
@@ -183,6 +207,8 @@ namespace ICafe.Persistence.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed");
 
+                    b.Property<int?>("PhotoId");
+
                     b.Property<string>("SecurityStamp");
 
                     b.Property<string>("Surname");
@@ -203,6 +229,8 @@ namespace ICafe.Persistence.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PhotoId");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -308,6 +336,14 @@ namespace ICafe.Persistence.Migrations
                         .HasForeignKey("OwnerId");
                 });
 
+            modelBuilder.Entity("ICafe.Domain.Entities.Photo", b =>
+                {
+                    b.HasOne("ICafe.Domain.Entities.Product")
+                        .WithOne("Photo")
+                        .HasForeignKey("ICafe.Domain.Entities.Photo", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("ICafe.Domain.Entities.Product", b =>
                 {
                     b.HasOne("ICafe.Domain.Entities.Favorites")
@@ -333,6 +369,10 @@ namespace ICafe.Persistence.Migrations
                     b.HasOne("ICafe.Domain.Entities.DiscountCard", "Discount")
                         .WithMany()
                         .HasForeignKey("DiscountId");
+
+                    b.HasOne("ICafe.Domain.Entities.Photo", "Photo")
+                        .WithMany()
+                        .HasForeignKey("PhotoId");
                 });
 
             modelBuilder.Entity("ICafe.Domain.Entities.UserRole", b =>

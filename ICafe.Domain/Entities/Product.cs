@@ -11,6 +11,7 @@ namespace ICafe.Domain.Entities
         public string Description { get; set; }
         public string Category { get; set; }
         public decimal Price { get; set; }
+        public Photo Photo { get; set; }
         public virtual ICollection<ProductOrder> ProductOrders { get; set; }
     }
 }

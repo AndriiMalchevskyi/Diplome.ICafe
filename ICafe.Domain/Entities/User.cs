@@ -14,7 +14,7 @@ namespace ICafe.Domain.Entities
         public ICollection<Favorites> FavoriteCollection { get; set; }
         public DateTime DateOfBirth { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
-
+        public Photo Photo { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastActive { get; set; }
     }

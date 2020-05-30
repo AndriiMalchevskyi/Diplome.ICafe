@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ICafe.Application.Models.Filter;
 using ICafe.Application.Models.Order;
+using ICafe.Application.Models.Photo;
 using ICafe.Application.Models.Product;
 using ICafe.Application.Models.User;
 using ICafe.Domain.Entities;
@@ -15,7 +16,8 @@ namespace ICafe.Application.Helpers
         public AutoMapperProfiles()
         {
 
-            CreateMap<User, UserForListDto>();
+            CreateMap<User, UserForListDto>()
+                .ForMember(m => m.PhotoUrl, opt => opt.MapFrom(src => src.Photo.Url));
             //.ForMember(dest => dest.Age, opt => {
             //     opt.ResolveUsing(d => d.DateOfBirth.CalculateAge());
             // });
@@ -24,18 +26,26 @@ namespace ICafe.Application.Helpers
             //     opt.ResolveUsing(d => d.DateOfBirth.CalculateAge());
             // });
             CreateMap<User, UserForRegisterDto>();
-            //CreateMap<EstatePhoto, PhotosForDetailedDto>();
-           // CreateMap<EstatePhoto, PhotoForReturnDto>();
-            //CreateMap<PhotoForCreationDto, EstatePhoto>();
+
+
+
+            CreateMap<Photo, PhotoForDetailedDto>();
+            CreateMap<Photo, PhotoForReturnDto>();
+            CreateMap<PhotoForCreationDto, Photo>();
+            
             CreateMap<UserForRegisterDto, User>();
 
-            CreateMap<User, UserForDetailedDto>().ForMember(m => m.Roles, opt => opt.MapFrom(src => src.UserRoles));
+            CreateMap<User, UserForDetailedDto>()
+                .ForMember(m => m.Roles, opt => opt.MapFrom(src => src.UserRoles))
+                .ForMember(m => m.PhotoUrl, opt => opt.MapFrom(src => src.Photo.Url));
 
             CreateMap<Filter, FilterDto>();
             CreateMap<FilterDto, Filter>();
 
             CreateMap<ProductToCreateDto, Product>();
             CreateMap<ProductToUpdateDto, Product>();
+            CreateMap<Product, ProductToDetailDto>()
+                .ForMember(m => m.PhotoUrl, opt => opt.MapFrom(src => src.Photo.Url));
 
             CreateMap<OrderToCreateDto, Order>();
             CreateMap<OrderToUpdateDto, Order>();

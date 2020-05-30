@@ -10,6 +10,7 @@ namespace ICafe.Application.Models.User
         public int Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
+        public string PhotoUrl { get; set; }
         public ICollection<UserRole> UserRoles { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastActive { get; set; }
