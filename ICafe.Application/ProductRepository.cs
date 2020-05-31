@@ -48,6 +48,7 @@ namespace ICafe.Application
         {
             var products = await _context.Products
                 .Include(p => p.Photo)
+                .Where(p => p.Category == filter.Type)
                 .Skip(filter.Offset).Take(filter.Limit).ToListAsync();
 
             return products;
